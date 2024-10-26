@@ -1,0 +1,77 @@
+---
+import WaitlistInput from "./WaitlistInput.astro"
+import WhitePaperDownload from "./WhitePaperDownload.astro"
+---
+
+<section class="container hero-section">
+  <div class="hero-section--title">
+    <WhitePaperDownload />
+
+    <h1 class="">Simplifying Payments for Everyone</h1>
+
+    <h4 class="">
+      TextCash enables seamless 2G transactions using SMS and USSD protocols,
+      with cross-border remittance powered by the Stellar blockchain.
+    </h4>
+  </div>
+
+  <div>
+    <WaitlistInput />
+  </div>
+</section>
+
+<style lang="scss">
+  @import "../styles/_mixin.scss";
+
+  .hero-section {
+    display: flex;
+    padding: 80px 32px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 44px;
+  }
+
+  .hero-section--title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    /* align-self: stretch; */
+  }
+
+  .hero-section--title > h1 {
+    color: var(--Base-Primary);
+    text-align: center;
+
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 110%; /* 92.4px */
+    letter-spacing: -3.78px;
+    max-width: var(--hero-title-width);
+
+    // medium to large
+    @include respond-to("medium") {
+      font-size: 84px;
+    }
+  }
+
+  .hero-section--title > h4 {
+    align-self: stretch;
+    color: var(--Base-Black);
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 33.6px */
+    letter-spacing: -0.28px;
+    max-width: var(--hero-title-width);
+
+    // medium to large
+    @include respond-to("medium") {
+      font-size: 24px;
+    }
+  }
+</style>

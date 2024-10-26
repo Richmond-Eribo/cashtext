@@ -1,0 +1,106 @@
+---
+import Input from "./ui/Input.astro"
+import Button from "./ui/Button.astro"
+
+// TODO: 1. create a form submission flow - success and failure
+// 2. send form data to backend
+//
+---
+
+<>
+  <form id="waitlist" class="waitlist-input">
+    <Input
+      data-activate="false"
+      variant="ghost"
+      placeholder="Enter your email"
+    />
+    <Button>Join Waitlist</Button>
+  </form>
+  <div class="form-error" data-error="role"></div>
+</>
+
+<script>
+  const form = document.getElementById("waitlist") as HTMLFormElement
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault()
+
+    document.querySelectorAll("[data-error]").forEach(el => {
+      el.textContent = ""
+    })
+
+    const formData = new FormData(form)
+    const data = Object.fromEntries(formData.entries())
+
+    try {
+      const response = await fetch("/api/submit-waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        if (response.status === 400 && result.errors) {
+          // Show validation errors
+          result.errors.forEach((error: any) => {
+            const errorElement = document.querySelector(
+              `[data-error="${error.path[0]}"]`
+            )
+            if (errorElement) {
+              errorElement.textContent = error.message
+            }
+          })
+        } else {
+          // formMessage.textContent = result.message;
+          // formMessage.className = 'text-red-500 text-center mt-4';
+        }
+        return
+      }
+
+      form.reset()
+
+      alert("successful")
+    } catch (error) {
+      alert(error)
+    }
+  })
+</script>
+
+<style>
+  .waitlist-input {
+    display: flex;
+
+    background-color: var(--Base-White);
+    max-width: 100%;
+    min-width: 300px;
+    padding: var(--Spacing-spacing-sm, 8px) var(--Spacing-spacing-md, 12px);
+    align-items: center;
+    gap: var(--Spacing-spacing-sm, 8px);
+
+    border-radius: 37px;
+    border: 1px solid var(--color-border, #e4e4e7);
+    background: var(--color-bg, #fff);
+
+    /* Shadows/sm */
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  }
+
+  .waitlist-input :global(input) {
+    flex-grow: 1;
+    min-width: 150px;
+  }
+
+  .form-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }
+
+  .waitlist-input :global(button) {
+    flex-shrink: 0;
+  }
+</style>

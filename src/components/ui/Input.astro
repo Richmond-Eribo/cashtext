@@ -1,0 +1,52 @@
+---
+interface Props {
+  variant?: "primary" | "ghost"
+  placeholder?: string
+  [key: string]: any
+}
+
+const { variant = "primary", placeholder = "", ...rest } = Astro.props
+---
+
+<input
+  class:list={[
+    "input",
+    {
+      "input-primary": variant === "primary",
+      "input-ghost": variant === "ghost",
+    },
+  ]}
+  placeholder={placeholder}
+  {...rest}
+/>
+
+<style>
+  .input {
+    font-family: inherit;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    background-color: white;
+  }
+
+  .input-primary {
+    border: 1px solid var(--Base-Secondary, #7b09e5);
+    outline: none;
+  }
+
+  .input-primary:focus {
+    box-shadow: 0 0 0 2px rgba(123, 9, 229, 0.2);
+  }
+
+  .input-ghost {
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+
+  .input-ghost::placeholder {
+    color: var(--Base-Primary, #19191c);
+    opacity: 0.5;
+  }
+</style>

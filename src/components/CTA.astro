@@ -1,0 +1,65 @@
+---
+import WaitlistInput from "./WaitlistInput.astro"
+---
+
+<section class="container cta-layout">
+  <div class="cta">
+    <div>
+      <h2>Join the waitlist</h2>
+
+      <p>No commitment. Be the first to know when we launch!</p>
+    </div>
+
+    <WaitlistInput />
+  </div>
+</section>
+
+<style lang="scss">
+  @import "../styles/mixin";
+
+  .cta-layout {
+    padding: 80px 30px 160px 30px;
+  }
+  .cta {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 30px;
+
+    /* flex-direction: column; */
+    /* align-items: flex-start; */
+    gap: 25px;
+    border-radius: 25px;
+    background: var(--Base-Secondary);
+
+    // medium to large
+    @include respond-to("medium") {
+      padding: 50px;
+    }
+  }
+
+  .cta h2 {
+    color: var(--Colors-Base-White, #fff);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 750;
+    /* background-color: aqua; */
+    padding: 0;
+    margin: 0;
+    line-height: normal;
+
+    // medium to large
+    @include respond-to("medium") {
+      font-size: 72px;
+    }
+  }
+
+  .cta p {
+    color: var(--Base-White);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+</style>

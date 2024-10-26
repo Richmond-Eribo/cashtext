@@ -1,0 +1,35 @@
+---
+import Button from "./ui/Button.astro"
+import Logo from "./ui/Logo.astro"
+---
+
+<nav class="nav container">
+  <Logo />
+
+  <Button id="nav-btn" />
+</nav>
+
+<script>
+  const NavBtn = document.getElementById("nav-btn") as HTMLElement
+
+  NavBtn.addEventListener("click", function () {
+    const formInput = document.querySelector(
+      "[data-activate]"
+    ) as HTMLInputElement
+
+    formInput.focus()
+
+    alert("heelo")
+  })
+</script>
+
+<style>
+  .nav {
+    display: flex;
+
+    margin: auto;
+    padding: 20px 30px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+</style>
