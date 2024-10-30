@@ -1,5 +1,5 @@
 ---
-import WaitlistInput from "./WaitlistInput.astro"
+import WaitlistInput from "./WaitlistInput.tsx"
 import WhitePaperDownload from "./WhitePaperDownload.astro"
 ---
 
@@ -17,7 +17,8 @@ import WhitePaperDownload from "./WhitePaperDownload.astro"
   </div>
 
   <div>
-    <WaitlistInput />
+    <WaitlistInput client:load />
+    <!-- <WaitlistInput /> -->
   </div>
 </section>
 

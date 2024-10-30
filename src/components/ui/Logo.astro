@@ -3,11 +3,19 @@
 ---
 
 <h1>
-  text<span>Cash</span>
+  <img src="/logo.png" width={40} height={40} alt="textcash logo" />
+  <span class="logo-name">
+    Text<span>Cash</span>
+  </span>
 </h1>
 
 <style>
+  @import "../../styles/_mixin.scss";
   h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     color: var(--Base-Pastel);
     text-align: center;
     font-family: "Helvetica Neue LT Std";
@@ -18,7 +26,15 @@
     /* letter-spacing: 2.86px; */
   }
 
-  h1 > span {
+  .logo-name {
+    display: hidden
+    
+    @include respond-to("medium") {
+      display: inline-block;
+    }
+  }
+
+  h1 > span > span {
     margin: 0px;
     padding: 0px;
     color: var(--Base-Secondary);

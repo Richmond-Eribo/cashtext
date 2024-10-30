@@ -5,71 +5,79 @@ import Button from "./ui/Button.astro"
 // TODO: 1. create a form submission flow - success and failure
 // 2. send form data to backend
 //
+
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData()
+    const name = data.get("phone")
+
+    const response = await fetch("/api/submit-waitlist", {
+      method: "POST",
+      body: data,
+    })
+
+    console.log(response)
+
+    // Do something with the data
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message)
+    }
+  }
+}
 ---
 
 <>
-  <form id="waitlist" class="waitlist-input">
+  <form id="waitlist" class="waitlist-input" method="POST">
     <Input
       data-activate="false"
       variant="ghost"
       type="tel"
       placeholder="Enter your phone number"
+      name="phone"
+      required
     />
     <Button>Join Waitlist</Button>
   </form>
   <div class="form-error" data-error="role"></div>
 </>
 
-<script>
+<!-- <script>
   const form = document.getElementById("waitlist") as HTMLFormElement
 
   form.addEventListener("submit", async function (e) {
     e.preventDefault()
 
-    document.querySelectorAll("[data-error]").forEach(el => {
-      el.textContent = ""
-    })
+    // document.querySelectorAll("[data-error]").forEach(el => {
+    //   el.textContent = ""
+    // })
 
     const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
+    // const data = Object.fromEntries(formData.entries())
 
-    try {
-      const response = await fetch("/api/submit-waitlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
+    console.log(formData.get("phone"))
 
-      const result = await response.json()
+    // try {
+    //   const response = await fetch("/api/submit-waitlist", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: formData,
+    //   })
 
-      if (!response.ok) {
-        if (response.status === 400 && result.errors) {
-          // Show validation errors
-          result.errors.forEach((error: any) => {
-            const errorElement = document.querySelector(
-              `[data-error="${error.path[0]}"]`
-            )
-            if (errorElement) {
-              errorElement.textContent = error.message
-            }
-          })
-        } else {
-          // formMessage.textContent = result.message;
-          // formMessage.className = 'text-red-500 text-center mt-4';
-        }
-        return
-      }
+    //   const result = await response.json()
 
-      form.reset()
+    //   console.log(result)
 
-      alert("successful")
-    } catch (error) {
-      alert(error)
-    }
+    //   // form.reset()
+
+    //   // alert("successful")
+    // } catch (error) {
+    //   alert(error)
+    // }
   })
-</script>
+</script> -->
 
 <style>
   .waitlist-input {
