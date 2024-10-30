@@ -1,12 +1,13 @@
-import type { FormEvent } from "react"
+import { useRef, useState, type FormEvent } from "react"
 import Button from "./ui/Button.tsx"
 
 const WaitlistInput = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    setLoading(true)
+
     const formData = new FormData(e.currentTarget)
-    console.log(formData.get("phone"))
 
     // Uncomment and modify as needed:
     try {
@@ -15,11 +16,21 @@ const WaitlistInput = () => {
         body: formData,
       })
       const result = await response.json()
-      console.log(result)
-    } catch (error) {
-      alert(error)
+      setLoading(false)
+      inputRef.current!.value = ""
+      setsuccessMessage(result.message)
+    } catch (error: any) {
+      //   alert(error)
+      setLoading(false)
+      inputRef.current!.value = ""
+      setErrorMessage(error.errors.message)
     }
   }
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [successMessage, setsuccessMessage] = useState("")
 
   return (
     <>
@@ -30,10 +41,19 @@ const WaitlistInput = () => {
           type="tel"
           placeholder="Enter your phone number"
           name="phone"
+          ref={inputRef}
         />
-        <Button>Join Waitlist</Button>
+        <Button disabled={loading}>
+          {loading ? "Sending" : "Join Waitlist"}
+        </Button>
       </form>
-      <div className="form-error" data-error="role"></div>
+      <div className="form-error" data-error="role">
+        {errorMessage && errorMessage}
+      </div>
+
+      <div className="form-success" data-error="role">
+        {successMessage && successMessage}
+      </div>
 
       <style>{`
         .waitlist-input {
@@ -60,13 +80,27 @@ const WaitlistInput = () => {
         }
 
         .form-error {
+        width: 100%;
           color: red;
           font-size: 12px;
-          margin-top: 4px;
+          margin-top: 10px;
+          text-align: center;
+        }
+
+         .form-success {
+         width: 100%;
+          color: gray;
+          font-size: 12px;
+          margin-top: 10px;
+          text-align: center;
         }
 
         button {
           flex-shrink: 0;
+        }
+      
+         button:disabled {
+        background-color: gray;
         }
       `}</style>
     </>

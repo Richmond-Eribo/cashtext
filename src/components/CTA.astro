@@ -1,5 +1,5 @@
 ---
-import WaitlistInput from "./WaitlistInput.astro"
+import WaitlistInput from "./WaitlistInput.tsx"
 ---
 
 <section class="container cta-layout">
@@ -10,10 +10,10 @@ import WaitlistInput from "./WaitlistInput.astro"
       <p>No commitment. Be the first to know when we launch!</p>
     </div>
 
-    <WaitlistInput />
-    <form>
-      
-    </form>
+    <div>
+      <WaitlistInput client:load />
+    </div>
+    <!-- <form></form> -->
   </div>
 </section>
 

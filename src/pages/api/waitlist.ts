@@ -19,9 +19,8 @@ const credentials = {
   client_id: import.meta.env.GOOGLE_CLIENT_ID,
   auth_uri: import.meta.env.GOOGLE_AUTH_URI,
   token_uri: import.meta.env.GOOGLE_TOKEN_URI,
-  auth_provider_x509_cert_url: import.meta.env
-    .GOOGLE_AUTH_PROVIDER_X509_CERT_URL,
-  client_x509_cert_url: import.meta.env.GOOGLE_CLIENT_X509_CERT_URL,
+  auth_provider_x509_cert_url: import.meta.env.GOOGLE_AUTH_PROVIDER_CERT_URL,
+  client_x509_cert_url: import.meta.env.GOOGLE_CLIENT_CERT_URL,
   universe_domain: import.meta.env.GOOGLE_UNIVERSE_DOMAIN,
 }
 
@@ -33,19 +32,7 @@ const auth = new google.auth.GoogleAuth({
 const sheets = google.sheets({ version: "v4", auth })
 const sheetID = import.meta.env.GOOGLE_SHEET_ID
 
-// export const POST: APIRoute = async ({ request, clientAddress }) => {
-//   const data = await request.formData()
-//   const phoneNumber = data.get("phone")
-//   console.log(request, data)
-
-//   return new Response(
-//     JSON.stringify({
-//       message: "ji",
-//     })
-//   )
-// }
-
-export const POST: APIRoute = async ({ request, clientAddress }) => {
+export const POST: APIRoute = async ({ request }) => {
   // --- validation
   const data = await request.formData()
   const phoneNumber = data.get("phone")
@@ -68,23 +55,46 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   // ---
 
   try {
-    await sheets.spreadsheets.values.append({
+    const res = await sheets.spreadsheets.values.append({
       spreadsheetId: sheetID,
       range: "Sheet1!A:A", // Adjust range if necessary
       valueInputOption: "RAW",
       insertDataOption: "INSERT_ROWS",
-      // values: [[phoneNumber]],
+      requestBody: {
+        values: [[phoneNumber]],
+      },
     })
-    return new Response("Phone number saved!", { status: 200 })
-  } catch (error) {
+
+    console.log(res)
+    return new Response(
+      JSON.stringify({
+        message: "Successfully joined the waitlist",
+      }),
+      { status: res.status }
+    )
+  } catch (error: any) {
     return new Response(
       JSON.stringify({
         message: "Failed to join waitlist",
         error: error,
       }),
       {
-        status: 500,
+        status: 400,
       }
     )
   }
+
+  //
 }
+
+// export const POST: APIRoute = async ({ request, clientAddress }) => {
+//   const data = await request.formData()
+//   const phoneNumber = data.get("phone")
+//   console.log(request, data)
+
+//   return new Response(
+//     JSON.stringify({
+//       message: "ji",
+//     })
+//   )
+// }
