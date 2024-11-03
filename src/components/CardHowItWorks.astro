@@ -1,5 +1,5 @@
 ---
-import { escapeHTML } from "astro/runtime/server/escape.js"
+import { Image } from "astro:assets"
 
 interface Props {
   title: string
@@ -29,7 +29,7 @@ const { title, subtext, image, index } = Astro.props
   </div>
 
   <div class="image">
-    <img src={image} alt={`3d image for ${title}`} style="width: 145px;" />
+    <Image src={image} alt={`3d image for ${title}`} height={145} width={145} />
   </div>
 </div>
 
