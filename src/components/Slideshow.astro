@@ -72,10 +72,8 @@ const images = [
 
       if (entry.isIntersecting) {
         autoScroll.play()
-        console.log("in the viewport")
       } else {
         autoScroll.stop()
-        console.log("not in the viewport")
       }
     },
     { threshold: 0.4 }
