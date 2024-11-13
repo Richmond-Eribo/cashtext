@@ -1,0 +1,129 @@
+---
+import { Image } from "astro:assets"
+// import image from "..content/images/img.webp"
+
+const images = [
+  "/showcase/img.webp",
+  "/showcase/img (2).webp",
+  "/showcase/img (3).webp",
+  "/showcase/img (4).webp",
+  "/showcase/img (5).webp",
+  "/showcase/img (6).webp",
+  "/showcase/img (7).webp",
+  "/showcase/img (8).webp",
+  "/showcase/img (9).webp",
+  "/showcase/img (10).webp",
+  "/showcase/img (11).webp",
+  "/showcase/img (12).webp",
+  "/showcase/img (13).webp",
+  "/showcase/img (14).webp",
+  "/showcase/img (15).webp",
+]
+// import { getCollection } from "astro:content"
+
+// const images = await getCollection("images")
+// console.log(images)
+---
+
+<section class="container slideshow">
+  <div class="embla">
+    <div class="embla__container">
+      {
+        images.map(i => (
+          <div class="embla__slide">
+            <Image
+              src={i}
+              alt={`showcase-${i}`}
+              inferSize={true}
+              width={300}
+              height="500"
+              class="image"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import EmblaCarousel from "embla-carousel"
+  //   import Autoplay from "embla-carousel-autoplay"
+  import AutoScroll from "embla-carousel-auto-scroll"
+
+  const emblaNode = document.querySelector(".embla") as HTMLDivElement
+  const options = { loop: true }
+  const plugins = [AutoScroll({ playOnInit: false })]
+  const EmblaAPI = EmblaCarousel(emblaNode, options, plugins)
+
+  interface ObserverOptions extends IntersectionObserverInit {}
+  type ObserverCallback = (entry: IntersectionObserverEntryInit) => void
+
+  class IntersectionObserverHelper {
+    private observer: IntersectionObserver
+    private callback: ObserverCallback
+    private options: ObserverOptions
+
+    constructor(callback: ObserverCallback, options: ObserverOptions = {}) {
+      this.options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.1,
+        ...options,
+      }
+      this.callback = callback
+
+      //   create the observer
+
+      this.observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this.callback(entry)
+          }
+        })
+      }, this.options)
+    }
+  }
+</script>
+
+<style>
+  .slideshow {
+    padding: 90px 0px;
+  }
+  .embla {
+    overflow: hidden;
+  }
+  .embla__container {
+    display: flex;
+  }
+  .embla__slide {
+    display: relative;
+    overflow: hidden;
+    border-radius: 37px;
+    flex: 0 0 50%;
+    min-width: 320px;
+    aspect-ratio: 4 / 5;
+    background-color: rgb(218, 218, 218);
+    margin-right: 10px;
+  }
+
+  .image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: 768px) {
+    /* iPad display */
+    .embla__slide {
+      flex: 0 0 40%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    /* Laptop display */
+    .embla__slide {
+      flex: 0 0 30%;
+    }
+  }
+</style>
